@@ -2,7 +2,7 @@
 require_once 'conecta.php';
 
 $countSql = "SELECT COUNT(*) AS total FROM produtos ORDER BY id ASC";
-$dataSql = "SELECT * FROM produtos ORDER BY id ASC";
+$dataSql = "SELECT p.id, p.nome, p.imagem, p.valor, p.grupo_id, g.nome as gruponome FROM produtos p LEFT JOIN grupo g on (p.grupo_id = g.id) ORDER BY id ASC";
 
 $qryCount = $PDO->prepare($countSql);
 $qryCount->execute();
@@ -32,9 +32,10 @@ include 'header.php'
 	<thead>
 		<tr>
 			<th width="2%">#</th>
-			<th>Produto</th>
+			<th width=35%>Produto</th>
 			<th width="10%">Valor</th>
 			<th width="10%">Imagem</th>
+			<th width="15%">Grupo</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -49,6 +50,7 @@ include 'header.php'
 					<?php } else { ?>
 						<td><?= '<img class="imgProduto" src="data:image/jpeg;base64,' . base64_encode($produto['imagem']) . '"/>' ?></td>
 					<?php } ?>
+					<td><?= $produto['gruponome'] ?></td>
 					<td class="actions text-right">
 						<a href="produtoForm.php?id=<?= $produto['id'] ?>&op=2" class="btn btn-sm btn-warning">
 							<i class="fa fa-pencil"></i> Editar
